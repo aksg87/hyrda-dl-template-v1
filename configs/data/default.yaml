@@ -1,0 +1,73 @@
+# data conf
+
+config_dict:
+  MinMaxIntensity:
+    max_intensity: 100.0
+    min_intensity: -100.0
+    scale_to_1: false
+  MultiChannelMask:
+    multichannel_mask: 2
+  Normalize:
+    mean: 77.99
+    std: 75.4
+  RandomFlip:
+    axes: [0, 1, 2]
+  ResizeVolume:
+    input_dimensions: [512, 512, 5]
+    input_resolution: null
+
+transform_train:
+  _target_: segmentation.TransformController
+  is_training: true
+  preset_mode: CT
+  config_dict: ${..config_dict}
+  excluded_transforms:
+    - CropVolume
+
+transform_val:
+  _target_: segmentation.TransformController
+  is_training: false
+  preset_mode: CT
+  config_dict: ${..config_dict}
+  excluded_transforms:
+    - CropVolume
+
+dataset_train:
+  _target_: segmentation.RadiologyData
+  img_dir: "/train/"
+  volume_strings:
+    image: CT.nii
+    mask: combined_label.nii
+  transform: ${..transform_train}
+  mask_values:
+    0: 0
+    1: 1
+    2: 1
+
+dataset_val:
+  _target_: segmentation.RadiologyData
+  img_dir: "/val/"
+  volume_strings:
+    image: CT.nii
+    mask: combined_label.nii
+  transform: ${..transform_val}
+  mask_values:
+    0: 0
+    1: 1
+    2: 1
+
+dataloader_train:
+  _target_: torch.utils.data.DataLoader
+  dataset: ${..dataset_train}
+  batch_size: 4
+  shuffle: true
+  num_workers: 32
+  pin_memory: true
+
+dataloader_val:
+  _target_: torch.utils.data.DataLoader
+  dataset: ${..dataset_val}
+  batch_size: 4
+  shuffle: false
+  num_workers: 8
+  pin_memory: true

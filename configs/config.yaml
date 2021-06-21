@@ -1,0 +1,9 @@
+# default conf
+
+defaults:
+  - data: default
+  - hydra: default
+  - logging: default
+  - model: default
+  - optim: default
+  - train: default

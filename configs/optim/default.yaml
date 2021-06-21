@@ -1,0 +1,8 @@
+# optim conf
+
+optimizer:
+  _target_: segmentation.OptimGetter
+  module_name: torch.optim
+  name: Adam
+  param_dict:
+    lr: 2e-4

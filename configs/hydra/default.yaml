@@ -1,0 +1,5 @@
+# https://hydra.cc/docs/configure_hydra/intro/
+
+run:
+  # Output directory for normal runs
+  dir: ../runs/outputs${now:%Y-%m-%d_%H-%M-%S}

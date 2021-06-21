@@ -1,0 +1,19 @@
+# train conf
+
+trainer:
+  _target_: segmentation.Trainer
+  model: ${model.model}
+  optim_getter: ${optim.optimizer}
+  train_loader: ${data.dataloader_train}
+  val_loader: ${data.dataloader_val}
+  criterion: ${..criterion}
+  train_batch_size: 4
+  val_batch_size: 4
+  epochs: 100
+  lr: 2e-4
+  momentum: 0.8
+  log_interval: 5
+  val_interval: 5
+
+criterion:
+  _target_: segmentation.loss.Dice
